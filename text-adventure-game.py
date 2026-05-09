@@ -5,7 +5,7 @@ def create_rooms():
             "description": "The cozy burrow is warm but unstable. Loose dirt trembles above you as the tunnels continue to shake.",
             "exits": {"north": "Flower Garden", "west": "Veggie Garden", "east": "Twisty Tunnel"},
             "item": "Favourite Pillow",
-            "item-text": "You look towards your teddies and favourite pillow as they start shaking. You can't lose your precious belongings! " ,
+            "item-text": "You look towards your teddies and favourite pillow as they start shaking. You can't lose your precious belongings! ",
             "trap": None,
             "hint_direction": "The burrow branches north, west and east...",
             "hint_item": "Cushy items may protect you from dangerous falls..."
@@ -15,7 +15,7 @@ def create_rooms():
             "description": "A summery warm fragrance of roses hits you before you enter the flower garden. The sun beams across your face, you look up and you notice a bird flying overhead near a patch of tulips.",
             "exits": {"south": "Cozy Burrow"},
             "item": "Stick",
-            "item-text": "You look around and see a stick lying near the tulips, tangled between petals and fallen stems." ,
+            "item-text": "You look around and see a stick lying near the tulips, tangled between petals and fallen stems.",
             "trap": None,
             "hint_direction": "The only clear path leads south...",
             "hint_item": "Long items can help reach high places..."
@@ -25,7 +25,7 @@ def create_rooms():
             "description": "Vibrant rows of vegetables glisten in the soil, but the garden feels suspiciously quiet. Something useful may be hidden among the roots.",
             "exits": {"east": "Cozy Burrow"},
             "item": "Thick Bundle of Roots",
-            "item-text": "Thick roots twist through the soil, mixed in with broken stems and scraps of old plants." ,
+            "item-text": "Thick roots twist through the soil, mixed in with broken stems and scraps of old plants.",
             "trap": "net",
             "hint_direction": "The garden path leads east...",
             "hint_item": "Thick roots may help stabilise structures..."
@@ -35,17 +35,17 @@ def create_rooms():
             "description": "The burrow narrows, twisting and turning deeper underground. The air feels damp, and the walls are swallowed by darkness.",
             "exits": {"west": "Cozy Burrow", "south": "Magical Forest"},
             "item": "Glowy Mushroom",
-            "item-text": "A faint blue glow comes from a mushroom near the wall, highlighting the surrounding damp stones and moss." ,
+            "item-text": "A faint blue glow comes from a mushroom near the wall, highlighting the surrounding damp stones and moss.",
             "trap": None,
             "hint_direction": "The tunnel splits west and south...",
             "hint_item": "Dark places need a light source..."
         },
 
         "Magical Forest": {
-            "description" : "Whispers of an ancient language surround you as you approach the magical forest. Chills roll down your back as it gets darker and darker till you can't see much at all.",
+            "description": "Whispers of an ancient language surround you as you approach the magical forest. Chills roll down your back as it gets darker and darker till you can't see much at all.",
             "exits": {"north": "Twisty Tunnel", "south": "Ancient Oak Door"},
             "item": None,
-            "item-text": "" ,
+            "item-text": "",
             "trap": "darkness",
             "hint_direction": "Escape the forest north or south...",
             "hint_item": "Something glowing may help here..."
@@ -56,24 +56,26 @@ def create_rooms():
             "exits": {"north": "Magical Forest"},
             "item": "Golden Key",
             "trap": None,
-            "item-text": "" ,
+            "item-text": "",
             "hint_direction": "The way back is north...",
             "hint_item": "The key is too high to reach without a tool..."
         }
 
-}
+    }
 
 rooms = create_rooms()
 
+
 #  Displays the player's current location, remaining moves and inventory
 def show_status(current_room, moves_left, inventory):
-    print("\n--------------------------------- STATUS ---------------------------------")
+    print("\n---------------------------------- STATUS ----------------------------------")
     print(f"Location: {current_room}")
     print(f"Hops left: {moves_left}")
     if inventory:
         print("Items:", ", ".join(inventory))
     else:
         print("Items: Empty")
+
 
 #  Displays the current room description and item text
 def show_room(current_room, moves_left, inventory):
@@ -91,14 +93,16 @@ def show_room(current_room, moves_left, inventory):
     elif room_info["item"] is not None:
         print(room_info["item-text"])
 
+
 #  Shows all collected items in the player's inventory
 def show_inventory(inventory):
     if not inventory:
-        print("Your basket is empty!")
+        print("\nYour woven basket is empty!")
     else:
-        print("Your basket contains: ")
+        print("\nYour woven basket contains: ")
         for item in inventory:
             print("-", item)
+
 
 #  Handles player movement between connected rooms and reduces the remaining move count
 def move_player(current_room, direction, moves_left):
@@ -124,6 +128,7 @@ def move_player(current_room, direction, moves_left):
         print(f"\nYou try to hop {direction}... thud. A wall. Maybe not that way.")
         return current_room, moves_left
 
+
 #  Allows the player to collect items and checks for special items needed to win the game
 def take_item(current_room, inventory, moves_left, collected_rooms, requested_item):
     current_item = rooms[current_room]["item"]
@@ -141,7 +146,7 @@ def take_item(current_room, inventory, moves_left, collected_rooms, requested_it
         return inventory, moves_left, False, collected_rooms
 
     if requested_item not in current_item.lower():
-        print(f"\n{requested_item.capitalize()} catches your eye, but it will not help on your journey.")
+        print(f"\n{requested_item.capitalize()} catches your eye, but you cannot take {requested_item} here.")
         return inventory, moves_left, False, collected_rooms
 
     if current_item == "Golden Key":
@@ -150,10 +155,18 @@ def take_item(current_room, inventory, moves_left, collected_rooms, requested_it
             rooms[current_room]["item"] = None
             collected_rooms.append(current_room)
 
-            print("Using the Stick, you carefully push the Golden Key from the crow's nest. Thud. The heavy key lands beside you.")
+            print("\nUsing the Stick, you carefully push the Golden Key from the crow's nest. Thud. The heavy key lands beside you.")
             print("You quickly unlock the Ancient Oak Door as the whispers suddenly fall silent.")
             print("The huge door creaks open, revealing endless banana trees glowing in the moonlight.")
-            print("You have found banana paradise! YAY")
+
+            print(r"""
+             (\_/)      
+             (•.•)     YAY!
+             / >🍌
+
+            BANANA PARADISE FOUND!
+            """)
+
             print(f"\nYou escaped with {moves_left} moves remaining.")
 
             game_over = True
@@ -177,8 +190,9 @@ def take_item(current_room, inventory, moves_left, collected_rooms, requested_it
         game_over = False
         return inventory, moves_left, game_over, collected_rooms
 
+
 #  Checks whether a room trap is triggered and gives penalties if the player does not have the protective items
-def  check_trap(current_room, inventory, moves_left, triggered_traps):
+def check_trap(current_room, inventory, moves_left, triggered_traps):
     if current_room in triggered_traps:
         return moves_left, triggered_traps
 
@@ -186,7 +200,8 @@ def  check_trap(current_room, inventory, moves_left, triggered_traps):
         if "Favourite Pillow" in inventory:
             print("Your Favourite Pillow cushions you from the hidden ditch trap.")
         else:
-            print("A hidden ditch covered with warm autumn leaves swallows you. You're trapped! Panicking, you dig your way out but lose time.")
+            print(
+                "A hidden ditch covered with warm autumn leaves swallows you. You're trapped! Panicking, you dig your way out but lose time.")
             moves_left -= 3
 
         triggered_traps.append(current_room)
@@ -195,41 +210,52 @@ def  check_trap(current_room, inventory, moves_left, triggered_traps):
         if "Glowy Mushroom" in inventory:
             print("The Glowy Mushroom lights up your path revealing dense forest and thick mist swirling around you.")
         else:
-            print("You hop carefully into the Magical Forest but it's too dark. You stumble over a fallen tree and lose time.")
+            print(
+                "You hop carefully into the Magical Forest but it's too dark. You stumble over a fallen tree and lose time.")
             moves_left -= 2
 
         triggered_traps.append(current_room)
 
     return moves_left, triggered_traps
 
+
 #  Displays collapse warnings at specific move counts while also preventing duplicate warning messages
 def check_collapse(moves_left, shown_warnings):
     if moves_left == 10 and 10 not in shown_warnings:
-        print("The tunnels shake harder. You need to hurry.")
+        print("\nThe tunnels shake harder. You need to hurry...")
         shown_warnings.append(10)
 
     if moves_left == 5 and 5 not in shown_warnings:
-        print("Dirt falls from the ceiling, covering your fur. You hear parts of the burrow collapsing in the distance. Hurry.")
+        print(
+            "\nDirt falls from the ceiling, covering your fur. You hear parts of the burrow collapsing in the distance. Hurry...")
         shown_warnings.append(5)
 
     if moves_left == 1 and 1 not in shown_warnings:
-        print("The walls crack around you. One more delay could be fatal.")
+        print("\nThe walls crack around you. One more delay could be fatal...")
         shown_warnings.append(1)
+
 
 #  Checks if the player has run out of moves and displays losing message
 def check_moves(moves_left):
     if moves_left <= 0:
         print("\nThe final rumble echoes behind you.")
         print("Your burrow collapses before you can unlock the Ancient Oak Door.")
-        print("Your cozy home and banana dreams are lost. You lose!")
+        print(r"""
+        (\_/)   💤
+        ( x.x)     YOU LOSE!
+        / > \>
+
+        Your cozy home and banana dreams are lost...
+        """)
         return True
     else:
         return False
 
+
 #  Displays item and direction hints for the current room
 def show_hints(current_room, hint_type):
     room = rooms[current_room]
-    print("\n--------------------------------- HINT ----------------------------------")
+    print("\n---------------------------------- HINT ------------------------------------")
 
     if hint_type == "direction":
         print("Direction hint:", room["hint_direction"])
@@ -237,6 +263,7 @@ def show_hints(current_room, hint_type):
         print("Item hint:", room["hint_item"])
     else:
         print("Type 'hint direction' or 'hint item'.")
+
 
 #  Controls the main game loop, player input, game progression and replay system.
 def main_game():
@@ -263,7 +290,15 @@ def main_game():
         else:
             break
 
-    print("\nTHE BUNNY AND THE GOLDEN KEY")
+    print(r"""  
+                           |)_|)
+                         („• ֊ •„) 
+                        |￣￣U  U￣￣￣￣￣￣￣￣￣|
+                        |   THE BUNNY AND      |
+                        |   THE GOLDEN KEY !   |
+                        |                      |
+                         ￣￣￣￣￣￣￣￣￣￣￣￣￣￣  """)
+
     print(f"\nWelcome, {player_name}!")
 
     print("\nSomewhere beyond the Ancient Oak Door, sweet banana trees are waiting.")
@@ -275,8 +310,8 @@ def main_game():
     print("A deep rumble shakes the tunnels. Your quest begins.")
 
     print("\n--------------------------------- COMMANDS ---------------------------------")
-    print("Move:                    go north / go south / go east / go west")
-    print("Shortcut:                n / s / e / w")
+    print("Move:                    go north / go east / go south / go west")
+    print("Shortcut:                n / e / s / w")
     print("Add To Woven Basket:     take (item you want to take)  e.g. 'take key' ")
     print("Others:                  inventory / look / hint direction / hint item / quit")
 
@@ -335,7 +370,8 @@ def main_game():
             hint_type = command[4:].strip()
             show_hints(current_room, hint_type)
         elif command == "quit":
-            print("\nYour eyes slowly close, exhaustion wrapping its comforting arms around you as your body slowly gives in to rest. You abandon the quest with dreams of abundant banana trees around you. Goodbye...")
+            print(
+                "\nYour eyes slowly close, exhaustion wrapping its comforting arms around you as your body slowly gives in to rest. You abandon the quest with dreams of abundant banana trees surrounding you. Goodbye...")
             game_over = True
         else:
             print("\nOops! I don't understand that command. Try 'go north', 'hint direction' or 'take (item)'.")
@@ -344,6 +380,7 @@ def main_game():
             check_collapse(moves_left, shown_warnings)
             if check_moves(moves_left):
                 game_over = True
+
 
 play_again = "yes"
 while play_again == "yes":
